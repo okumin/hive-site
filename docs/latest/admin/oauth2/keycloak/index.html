@@ -6,7 +6,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=description content>
 <meta name=author content>
-<title>Introduction to Apache Hive</title>
+<title>Apache Hive : Setting Up OAuth 2 with Keycloak</title>
 <link rel=icon href=/images/hive.svg sizes=any type=image/svg+xml>
 <link rel=stylesheet href=https://hive.apache.org/css/hive-theme.css>
 <link rel=stylesheet href=https://hive.apache.org/css/font-awesome.all.min.css>
@@ -133,39 +133,191 @@ ASF
 <ol>
 <li><a href=/><i class="fas fa-home"></i> Home</a></li>
 <li><a href=/docs/>Documentation</a></li>
-<li class=active>Introduction to Apache Hive</li>
+<li class=active>Apache Hive : Setting Up OAuth 2 with Keycloak</li>
 </ol>
 </nav>
 <header class=docs-header>
-<h1 class=docs-title>Introduction to Apache Hive</h1>
+<h1 class=docs-title>Apache Hive : Setting Up OAuth 2 with Keycloak</h1>
 <div class=docs-meta>
 <span class=docs-date>
 <i class="fas fa-calendar-alt"></i>
-Last updated: December 12, 2024
+Last updated: September 30, 2025
 </span>
 </div>
 </header>
+<div class=docs-toc>
+<h4><i class="fas fa-list"></i> Table of Contents</h4>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#apache-hive--setting-up-oauth-2-with-keycloak>Apache Hive : Setting Up OAuth 2 with Keycloak</a>
+<ul>
+<li><a href=#keycloak-settings>Keycloak Settings</a>
+<ul>
+<li><a href=#1-register-hive-metastore-as-a-resource-server>1. Register Hive Metastore as a Resource Server</a></li>
+<li><a href=#2-define-the-catalog-scope>2. Define the &ldquo;catalog&rdquo; scope</a></li>
+<li><a href=#3-create-hive-metastore-clients>3. Create Hive Metastore clients</a></li>
+</ul>
+</li>
+<li><a href=#application-settings>Application Settings</a>
+<ul>
+<li><a href=#hive-metastore>Hive Metastore</a></li>
+<li><a href=#trino>Trino</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
 <div class=docs-article>
-<p>The <strong><a href=http://hive.apache.org/>Apache Hive™</a></strong> data warehouse software facilitates reading, writing, and managing large datasets residing in distributed storage and queried using SQL syntax.</p>
-<p>Built on top of <strong><a href=http://hadoop.apache.org/>Apache Hadoop™</a></strong>, Hive provides the following features:</p>
-<ul>
-<li>Tools to enable easy access to data via SQL, thus enabling data warehousing tasks such as extract/transform/load (ETL), reporting, and data analysis.</li>
-<li>A mechanism to impose structure on a variety of data formats</li>
-<li>Access to files stored either directly in <strong><a href=http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/HdfsUserGuide.html>Apache HDFS</a><a href=http://hadoop.apache.org/>™</a></strong> or in other data storage systems such as <strong><a href=http://hbase.apache.org/>Apache HBase</a><a href=http://hadoop.apache.org/>™</a></strong></li>
-<li>Query execution via <a href=http://tez.apache.org/>Apache Tez</a><strong><a href=http://hadoop.apache.org/>™</a></strong> or <a href=http://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html>MapReduce</a></li>
-<li>Procedural language with HPL-SQL</li>
-<li>Sub-second query retrieval via <a href=https://hive.apache.org/development/desingdocs/llap>Hive LLAP</a>, <a href=https://hadoop.apache.org/docs/r2.7.2/hadoop-yarn/hadoop-yarn-site/YARN.html>Apache YARN</a> and <a href=https://slider.incubator.apache.org/>Apache Slider</a>.</li>
-</ul>
-<p><a href=https://hive.apache.org/docs/latest/language/apache-hive-sql-conformance>Hive provides standard SQL functionality</a>, including many of the later <a href=https://en.wikipedia.org/wiki/SQL:2003>SQL:2003</a>, <a href=https://en.wikipedia.org/wiki/SQL:2011>SQL:2011</a>, and <a href=https://en.wikipedia.org/wiki/SQL:2016>SQL:2016</a> features for analytics.<br>
-Hive&rsquo;s SQL can also be extended with user code via user defined functions (UDFs), user defined aggregates (UDAFs), and user defined table functions (UDTFs).</p>
-<p>There is not a single &ldquo;Hive format&rdquo; in which data must be stored. Hive comes with built in connectors for comma and tab-separated values (CSV/TSV) text files, <a href=http://parquet.apache.org/>Apache Parquet</a><strong><a href=http://hadoop.apache.org/>™</a></strong>, <a href=http://orc.apache.org/>Apache ORC</a><strong><a href=http://hadoop.apache.org/>™</a></strong>, and other formats. Users can extend Hive with connectors for other formats. Please see <a href=https://hive.apache.org/community/resources/developerguide#file-formats>File Formats</a> and <a href=https://hive.apache.org/community/resources/developerguide#hive-serde>Hive SerDe</a> in the <a href=https://hive.apache.org/community/resources/developerguide>Developer Guide</a> for details.</p>
-<p>Hive is not designed for online transaction processing (OLTP) workloads. It is best used for traditional data warehousing tasks.</p>
-<p>Hive is designed to maximize scalability (scale out with more machines added dynamically to the Hadoop cluster), performance, extensibility, fault-tolerance, and loose-coupling with its input formats.</p>
-<p>Components of Hive include HCatalog and WebHCat.</p>
-<ul>
-<li><strong><a href=https://hive.apache.org/docs/latest/hcatalog/hcatalog-base>HCatalog</a></strong> is a table and storage management layer for Hadoop that enables users with different data processing tools — including Pig and MapReduce — to more easily read and write data on the grid.</li>
-<li><strong><a href=https://hive.apache.org/docs/latest/webhcat/webhcat-base>WebHCat</a></strong> provides a service that you can use to run Hadoop MapReduce (or YARN), Pig, Hive jobs. You can also perform Hive metadata operations using an HTTP (REST style) interface.</li>
-</ul>
+<h1 id=apache-hive--setting-up-oauth-2-with-keycloak>Apache Hive : Setting Up OAuth 2 with Keycloak</h1>
+<h2 id=keycloak-settings>Keycloak Settings</h2>
+<h3 id=1-register-hive-metastore-as-a-resource-server>1. Register Hive Metastore as a Resource Server</h3>
+<p>Browse <code>Manage -> Clients -> Create client</code>, and create a client for HMS, as an OAuth 2 resource server. This example uses<code>hive-metastore</code> as a client ID. You can access the client secret in the <code>Credentials</code> tab.</p>
+<p><img src=../images/keycloak/resource-server-hive-metastore-1.png alt></p>
+<p><img src=../images/keycloak/resource-server-hive-metastore-2.png alt></p>
+<h3 id=2-define-the-catalog-scope>2. Define the &ldquo;catalog&rdquo; scope</h3>
+<p>Iceberg REST Catalog uses &ldquo;catalog&rdquo; as the default scope name.</p>
+<p>Browse <code>Manage -> Client scopes -> Create client scope</code>, and create the scope. The <code>Name</code> must be <code>catalog</code> and <code>Include in token scope</code> must be enabled.</p>
+<p><img src=../images/keycloak/scope-catalog-1.png alt></p>
+<p>Then, access the <code>Mappers</code> tab, click <code>Configure a new mapper</code>, choose <code>Audience</code>, and set up a protocol mapper to configure the <code>aud</code> claim of access tokens. The value of <code>Included Client Audience</code> must be <code>hive-metastore</code>.</p>
+<p><img src=../images/keycloak/scope-catalog-2.png alt></p>
+<h3 id=3-create-hive-metastore-clients>3. Create Hive Metastore clients</h3>
+<p>Say that we configure Trino as a REST client.</p>
+<p>Browse <code>Manage -> Clients -> Create client</code>, and create a client for Trino, as an OAuth 2 client. You must enable <code>Service accounts roles</code>.</p>
+<p><img src=../images/keycloak/client-trino-1.png alt></p>
+<p><img src=../images/keycloak/client-trino-2.png alt></p>
+<p>Access the <code>Client scopes</code> tab, click <code>Add client scope</code>, check <code>catalog</code>, and add it as an <code>Optional</code> scope.</p>
+<p><img src=../images/keycloak/client-trino-3.png alt></p>
+<p>Optionally, you can add a custom claim, which is useful to resolve a user name. Let&rsquo;s add <code>hive-client-username</code> to the service account so that HMS can use it as a username later. Access <code>trino-dedicated</code> in the <code>Client scopes</code> tab, proceed with <code>Configure a new mapper</code>, choose <code>Hardcoded claim</code>, and add a protocol mapper.</p>
+<p><img src=../images/keycloak/client-trino-4.png alt></p>
+<p>Access the <code>Advanced</code> tab, and enable <code>Use "at+jwt" as access token header type</code>. Hive expects an Authorization Server to respect <a href=https://datatracker.ietf.org/doc/rfc9068/>RFC 9068</a>.</p>
+<p><img src=../images/keycloak/client-trino-5.png alt></p>
+<p>You can access the client secret in the <code>Credentials</code> tab.</p>
+<h2 id=application-settings>Application Settings</h2>
+<h3 id=hive-metastore>Hive Metastore</h3>
+<p>You will add the following parameters in your <code>metastore-site.conf</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Required?</th>
+<th>Default</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>metastore.catalog.servlet.auth</td>
+<td>Yes</td>
+<td><code>jwt</code></td>
+<td>You have to choose <code>oauth2</code></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.issuer</td>
+<td>Yes</td>
+<td>N/A</td>
+<td><code>https://{keycloak-host}:{keycloak-port}/realms/{realm name}</code></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.audience</td>
+<td>Yes</td>
+<td>N/A</td>
+<td>The client ID of HMS. In this example, <code>hive-metastore</code></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.validation.method</td>
+<td>No</td>
+<td><code>jwt</code></td>
+<td>Choose <code>introspection</code> if you prefer to use <a href=https://datatracker.ietf.org/doc/html/rfc7662>RFC 7662 - OAuth 2.0 Token Introspection</a>. Token Introspection can be required when you use <a href=https://www.keycloak.org/docs/latest/server_admin/#_using_lightweight_access_token>lightweight access token</a></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.principal.mapper.regex.username.field</td>
+<td>No</td>
+<td><code>sub</code></td>
+<td>The claim name which includes a username. In this example, <code>hive-client-username</code></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.principal.mapper.regex.username.pattern</td>
+<td>No</td>
+<td><code>(.*)</code></td>
+<td>The pattern to extract a username from the claim. For example, you can specify <code>(.*)@example.com</code> to use the local part of an email address as a username</td>
+</tr>
+</tbody>
+</table>
+<p>You also have to configure the following parameters when you use <code>metastore.catalog.servlet.auth.oauth2.validation.method=introspection</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Required?</th>
+<th>Default</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.client.id</td>
+<td>Yes</td>
+<td>N/A</td>
+<td>You must put the client ID of HMS when you use Token Introspection. In this example, <code>hive-metastore</code></td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.client.secret</td>
+<td>Yes</td>
+<td>N/A</td>
+<td>You must put the client secret of HMS when you use Token Introspection</td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.introspection.cache.expiry</td>
+<td>No</td>
+<td>60s</td>
+<td>The expiry time of the Token Introspection cache. <code>0</code> if you want to disable the cache</td>
+</tr>
+<tr>
+<td>metastore.catalog.servlet.auth.oauth2.introspection.cache.num</td>
+<td>No</td>
+<td>1000</td>
+<td>The number of entries for the Token Introspection cache</td>
+</tr>
+</tbody>
+</table>
+<h3 id=trino>Trino</h3>
+<p>You will configure the following parameters for <a href=https://trino.io/docs/current/object-storage/metastores.html#iceberg-rest-catalog>the REST catalog</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>connector.name</td>
+<td><code>iceberg</code></td>
+</tr>
+<tr>
+<td>iceberg.catalog.type</td>
+<td><code>rest</code></td>
+</tr>
+<tr>
+<td>iceberg.rest-catalog.uri</td>
+<td><code>https://{hms-host}:{hms-rest-port}/iceberg</code></td>
+</tr>
+<tr>
+<td>iceberg.rest-catalog.security</td>
+<td><code>OAUTH2</code></td>
+</tr>
+<tr>
+<td>iceberg.rest-catalog.oauth2.server-uri</td>
+<td><code>https://{keycloak-host}:{keycloak-port}/realms/{realm name}/protocol/openid-connect/token</code></td>
+</tr>
+<tr>
+<td>iceberg.rest-catalog.oauth2.credential</td>
+<td><code>{client-id-of-trino}:{client-secret-of-trino}</code>. In this example, <code>trino:{Client ID in the Credential tab}</code></td>
+</tr>
+</tbody>
+</table>
 </div>
 <footer class=docs-footer>
 <div class=docs-feedback>
@@ -181,12 +333,38 @@ Hive&rsquo;s SQL can also be extended with user code via user defined functions 
 </div>
 </div>
 <div class=docs-edit>
-<a href=https://github.com/apache/hive-site/edit/main/content/docs/latest/introduction-to-apache-hive.md class="btn btn-outline">
+<a href=https://github.com/apache/hive-site/edit/main/content/docs/latest/admin/oauth2/keycloak.md class="btn btn-outline">
 <i class="fab fa-github"></i> Edit this page on GitHub
 </a>
 </div>
 </footer>
 </article>
+<aside class=docs-toc-sidebar>
+<div class=docs-toc-sticky>
+<h4><i class="fas fa-list"></i> On this page</h4>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#apache-hive--setting-up-oauth-2-with-keycloak>Apache Hive : Setting Up OAuth 2 with Keycloak</a>
+<ul>
+<li><a href=#keycloak-settings>Keycloak Settings</a>
+<ul>
+<li><a href=#1-register-hive-metastore-as-a-resource-server>1. Register Hive Metastore as a Resource Server</a></li>
+<li><a href=#2-define-the-catalog-scope>2. Define the &ldquo;catalog&rdquo; scope</a></li>
+<li><a href=#3-create-hive-metastore-clients>3. Create Hive Metastore clients</a></li>
+</ul>
+</li>
+<li><a href=#application-settings>Application Settings</a>
+<ul>
+<li><a href=#hive-metastore>Hive Metastore</a></li>
+<li><a href=#trino>Trino</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
 </main>
 </div>
 </div>
