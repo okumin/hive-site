@@ -6,7 +6,7 @@
 <meta name=viewport content="width=device-width,initial-scale=1">
 <meta name=description content>
 <meta name=author content>
-<title>Apache Hive : LanguageManual Commands</title>
+<title>Apache Hive : Setting up Metastore backed by MariaDB</title>
 <link rel=icon href=/images/hive.svg sizes=any type=image/svg+xml>
 <link rel=stylesheet href=https://hive.apache.org/css/hive-theme.css>
 <link rel=stylesheet href=https://hive.apache.org/css/font-awesome.all.min.css>
@@ -133,15 +133,15 @@ ASF
 <ol>
 <li><a href=/><i class="fas fa-home"></i> Home</a></li>
 <li><a href=/docs/>Documentation</a></li>
-<li class=active>Apache Hive : LanguageManual Commands</li>
+<li class=active>Apache Hive : Setting up Metastore backed by MariaDB</li>
 </ol>
 </nav>
 <header class=docs-header>
-<h1 class=docs-title>Apache Hive : LanguageManual Commands</h1>
+<h1 class=docs-title>Apache Hive : Setting up Metastore backed by MariaDB</h1>
 <div class=docs-meta>
 <span class=docs-date>
 <i class="fas fa-calendar-alt"></i>
-Last updated: December 12, 2024
+Last updated: November 5, 2025
 </span>
 </div>
 </header>
@@ -149,107 +149,88 @@ Last updated: December 12, 2024
 <h4><i class="fas fa-list"></i> Table of Contents</h4>
 <nav id=TableOfContents>
 <ul>
-<li><a href=#apache-hive--languagemanual-commands>Apache Hive : LanguageManual Commands</a></li>
+<li><a href=#apache-hive--setting-up-metastore-backed-by-mariadb>Apache Hive : Setting up Metastore backed by MariaDB</a>
+<ul>
+<li><a href=#note>Note</a></li>
+<li><a href=#introduction>Introduction</a></li>
+<li><a href=#configuration>Configuration</a></li>
+</ul>
+</li>
 </ul>
 </nav>
 </div>
 <div class=docs-article>
-<h1 id=apache-hive--languagemanual-commands>Apache Hive : LanguageManual Commands</h1>
-<p>Commands are non-SQL statements such as setting a property or adding a resource. They can be used in HiveQL scripts or directly in the <a href=https://hive.apache.org/docs/latest/language/languagemanual-cli/>CLI</a> or <a href=#beeline>Beeline</a>.</p>
-<table>
-<thead>
-<tr>
-<th>Command</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>quit exit</td>
-<td>Use quit or exit to leave the interactive shell.</td>
-</tr>
-<tr>
-<td>reset</td>
-<td>Resets the configuration to the default values (as of Hive 0.10: see <a href=https://issues.apache.org/jira/browse/HIVE-3202>HIVE-3202</a>). Any configuration parameters that were set using the set command or -hiveconf parameter in hive commandline will get reset to default value.Note that this does not apply to configuration parameters that were set in set command using the &ldquo;hiveconf:&rdquo; prefix for the key name (for historic reasons).</td>
-</tr>
-<tr>
-<td>set =</td>
-<td>Sets the value of a particular configuration variable (key). <strong>Note:</strong> If you misspell the variable name, the CLI will not show an error.</td>
-</tr>
-<tr>
-<td>set</td>
-<td>Prints a list of configuration variables that are overridden by the user or Hive.</td>
-</tr>
-<tr>
-<td>set -v</td>
-<td>Prints all Hadoop and Hive configuration variables.</td>
-</tr>
-<tr>
-<td>add FILE[S] * add JAR[S] * add ARCHIVE[S] *</td>
-<td>Adds one or more files, jars, or archives to the list of resources in the distributed cache. See <a href=#hive-resources>Hive Resources</a> for more information.</td>
-</tr>
-<tr>
-<td>add FILE[S] * add JAR[S]  * add ARCHIVE[S] *</td>
-<td>As of <a href=https://issues.apache.org/jira/browse/HIVE-9664>Hive 1.2.0</a>, adds one or more files, jars or archives to the list of resources in the distributed cache using an <a href=http://ant.apache.org/ivy/>Ivy</a> URL of the form ivy://group:module:version?query_string. See <a href=#hive-resources>Hive Resources</a> for more information.</td>
-</tr>
-<tr>
-<td>list FILE[S] list JAR[S] list ARCHIVE[S]</td>
-<td>Lists the resources already added to the distributed cache. See <a href=#hive-resources>Hive Resources</a> for more information.</td>
-</tr>
-<tr>
-<td>list FILE[S] * list JAR[S] * list ARCHIVE[S] *</td>
-<td>Checks whether the given resources are already added to the distributed cache or not. See <a href=#hive-resources>Hive Resources</a> for more information.</td>
-</tr>
-<tr>
-<td>delete FILE[S] * delete JAR[S] * delete ARCHIVE[S] *</td>
-<td>Removes the resource(s) from the distributed cache.</td>
-</tr>
-<tr>
-<td>delete FILE[S] * delete JAR[S] * delete ARCHIVE[S] *</td>
-<td>As of <a href=https://issues.apache.org/jira/browse/HIVE-9664>Hive 1.2.0</a>, removes the resource(s) which were added using the from the distributed cache. See <a href=#hive-resources>Hive Resources</a> for more information.</td>
-</tr>
-<tr>
-<td>! </td>
-<td>Executes a shell command from the Hive shell.</td>
-</tr>
-<tr>
-<td>dfs </td>
-<td>Executes a dfs command from the Hive shell.</td>
-</tr>
-<tr>
-<td></td>
-<td>Executes a Hive query and prints results to standard output.</td>
-</tr>
-<tr>
-<td>source FILE </td>
-<td>Executes a script file inside the CLI.</td>
-</tr>
-<tr>
-<td>compile <code>&lt;groovy string></code> AS GROOVY NAMED </td>
-<td>This allows inline Groovy code to be compiled and be used as a UDF (as of Hive <a href=https://issues.apache.org/jira/browse/HIVE-5252>0.13.0</a>). For a usage example, see <a href=https://hive.apache.org/attachments/27362054/HiveContrib-Nov13-groovy_plus_hive.pptx>Nov. 2013 Hive Contributors Meetup Presentations – Using Dynamic Compilation with Hive</a>.</td>
-</tr>
-<tr>
-<td>show processlist</td>
-<td>Displays information about the operations currently running on HiveServer2. It helps to troubleshoot issues such as long running queries, connection starvation, etc. The command was introduced in <a href=https://issues.apache.org/jira/browse/HIVE-27829>HIVE-27829</a>.</td>
-</tr>
-</tbody>
-</table>
-<p>Sample Usage:</p>
-<pre tabindex=0><code>  hive&gt; set mapred.reduce.tasks=32;
-  hive&gt; set;
-  hive&gt; select a.* from tab1;
-  hive&gt; !ls;
-  hive&gt; dfs -ls;
+<h1 id=apache-hive--setting-up-metastore-backed-by-mariadb>Apache Hive : Setting up Metastore backed by MariaDB</h1>
+<aside class=table-of-contents>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#apache-hive--setting-up-metastore-backed-by-mariadb>Apache Hive : Setting up Metastore backed by MariaDB</a>
+<ul>
+<li><a href=#note>Note</a></li>
+<li><a href=#introduction>Introduction</a></li>
+<li><a href=#configuration>Configuration</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</aside>
+<h2 id=note>Note</h2>
+<p><strong>Starting from mysql-connector-java 8.0.12, using the default MySQL driver the Metastore cannot be up to service.</strong></p>
+<h2 id=introduction>Introduction</h2>
+<p>From mysql-connector-java 8.0.12, MySQL driver issues a getSQLKeywords call for retrieving this database&rsquo;s keywords, triggered by MySQLAdapter(DataNucleus) on Metastore initialization.
+However, the back table <code>KEYWORDS</code> in MariaDB diverged from that in MySQL, which makes the Metastore fail to start, an exception thrown like:</p>
+<pre tabindex=0><code>Caused by: java.sql.SQLSyntaxErrorException: Unknown column 'RESERVED' in 'where clause'
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:120) ~[mysql-connector-java.jar:8.0.22]
+    at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:97) ~[mysql-connector-java.jar:8.0.22]
+    at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122) ~[mysql-connector-java.jar:8.0.22]
+    at com.mysql.cj.jdbc.StatementImpl.executeQuery(StatementImpl.java:1200) ~[mysql-connector-java.jar:8.0.22]
+    at com.mysql.cj.jdbc.DatabaseMetaDataUsingInfoSchema.getSQLKeywords(DatabaseMetaDataUsingInfoSchema.java:1178) ~[mysql-connector-java.jar:8.0.22]
+    at org.datanucleus.store.rdbms.adapter.BaseDatastoreAdapter.&lt;init&gt;(BaseDatastoreAdapter.java:288) ~[datanucleus-rdbms-5.2.10.jar:?]
+</code></pre><p>We suggest switching the MySQL driver to the MariaDB if you have seen the same issue.</p>
+<h2 id=configuration>Configuration</h2>
+<p>Before start, make sure MariaDB is accessible, and create a dedicated database and a secure user account that the Hive Metastore will use to connect.
+Download the MariaDB JDBC Connector JAR (e.g., mariadb-java-client-x.x.x.jar) and place it in the Hive <code>$HIVE_HOME/lib</code> directory.</p>
+<p>For the first time to start the Hive Metastore service, the database must be initialized with the Hive schema. You can use the <code>schematool</code> utility provided with the Hive installation.
+Run this command from the Hive installation directory (<code>$HIVE_HOME/bin</code>):</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-Bash data-lang=Bash>
+schematool  -driver org.mariadb.jdbc.Driver -dbType mysql -initOrUpgradeSchema -url <span style=color:#e6db74>&#34;jdbc:mariadb://&lt;MariaDB_Host&gt;:&lt;Port&gt;/</span><span style=color:#e6db74>${</span>db<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span> -userName hive_user -passWord your_strong_password
+</code></pre></div><p>The main configuration file for Metastore is <code>$HIVE_HOME/conf/hive-site.xml</code>, this is where you tell the Metastore service (HMS) how to connect to your MariaDB database.
+The following XML properties must be added or updated in <code>hive-site.xml</code>:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-xml data-lang=xml><span style=color:#f92672>&lt;configuration&gt;</span>
+    <span style=color:#f92672>&lt;property&gt;</span>
+        <span style=color:#f92672>&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span style=color:#f92672>&lt;/name&gt;</span>
+        <span style=color:#f92672>&lt;value&gt;</span>jdbc:mariadb://<span style=color:#f92672>&lt;MariaDB_Host&gt;</span>:<span style=color:#f92672>&lt;Port&gt;</span>/${db}?createDatabaseIfNotExist=false&amp;amp;useSSL=false<span style=color:#f92672>&lt;/value&gt;</span>
+        <span style=color:#f92672>&lt;description&gt;</span>JDBC connection URL for the Metastore database.<span style=color:#f92672>&lt;/description&gt;</span>
+    <span style=color:#f92672>&lt;/property&gt;</span>
 
-</code></pre><pre tabindex=0><code>  hive&gt; show processlist;
-+------------+------------+-------------------+---------------------------------------+--------------------------+------------------------+----------------------------------------------------+----------+---------+--------------------------+-------------------+---------------+
-| User Name  |  Ip Addr   | Execution Engine  |              Session Id               | Session Active Time (s)  | Session Idle Time (s)  |                      Query ID                      |  State   | Txn ID  |   Opened Timestamp (s)   | Elapsed Time (s)  |  Runtime (s)  |
-+------------+------------+-------------------+---------------------------------------+--------------------------+------------------------+----------------------------------------------------+----------+---------+--------------------------+-------------------+---------------+
-| anonymous  | 127.0.0.1  | tez               | fb33f25e-bc8f-42f4-9ed2-28ca3ea55806  | 3                        | 1                      | tarak_20251113120712_e9a91156-c8fa-401d-9ab9-b44444c6768d | RUNNING  | 527     | 2025-11-13 12:07:12.571  | 1                 | Not finished  |
-| anonymous  | 127.0.0.1  | tez               | 24c029d3-cfa3-43ae-966c-a262b3f0d323  | 3                        | 1                      | tarak_20251113120712_ff6524ff-2e12-4d36-803a-e1425ec18e60 | RUNNING  | 528     | 2025-11-13 12:07:12.579  | 1                 | Not finished  |
-+------------+------------+-------------------+---------------------------------------+--------------------------+------------------------+----------------------------------------------------+----------+---------+--------------------------+-------------------+---------------+
+    <span style=color:#f92672>&lt;property&gt;</span>
+        <span style=color:#f92672>&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span style=color:#f92672>&lt;/name&gt;</span>
+        <span style=color:#f92672>&lt;value&gt;</span>org.mariadb.jdbc.Driver<span style=color:#f92672>&lt;/value&gt;</span>
+        <span style=color:#f92672>&lt;description&gt;</span>The JDBC driver class name for MariaDB.<span style=color:#f92672>&lt;/description&gt;</span>
+    <span style=color:#f92672>&lt;/property&gt;</span>
 
-</code></pre>
+    <span style=color:#f92672>&lt;property&gt;</span>
+        <span style=color:#f92672>&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span style=color:#f92672>&lt;/name&gt;</span>
+        <span style=color:#f92672>&lt;value&gt;</span>hive_user<span style=color:#f92672>&lt;/value&gt;</span>
+        <span style=color:#f92672>&lt;description&gt;</span>Username for the Metastore database connection.<span style=color:#f92672>&lt;/description&gt;</span>
+    <span style=color:#f92672>&lt;/property&gt;</span>
+
+    <span style=color:#f92672>&lt;property&gt;</span>
+        <span style=color:#f92672>&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span style=color:#f92672>&lt;/name&gt;</span>
+        <span style=color:#f92672>&lt;value&gt;</span>your_strong_password<span style=color:#f92672>&lt;/value&gt;</span>
+        <span style=color:#f92672>&lt;description&gt;</span>Password for the Metastore database connection.<span style=color:#f92672>&lt;/description&gt;</span>
+    <span style=color:#f92672>&lt;/property&gt;</span>
+<span style=color:#f92672>&lt;/configuration&gt;</span>
+</code></pre></div><p><strong>Important:</strong></p>
+<ul>
+<li>Replace <code>&lt;MariaDB_Host>:&lt;Port></code> with the correct hostname/IP addresses.</li>
+<li>The JDBC URL, <code>&</code> must be escaped as <code>&amp;amp;</code> in XML.</li>
+</ul>
+<p>After all configurations are complete, you can start the Hive Metastore service.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>hive --service metastore
+</code></pre></div><p>Want a quick play on the new driver? try our <a href=../setting-up-hive-with-docker>Docker image</a>:</p>
+<p> </p>
+<p> </p>
 </div>
 <footer class=docs-footer>
 <div class=docs-feedback>
@@ -265,12 +246,28 @@ Last updated: December 12, 2024
 </div>
 </div>
 <div class=docs-edit>
-<a href=https://github.com/apache/hive-site/edit/main/content/docs/latest/language/languagemanual-commands.md class="btn btn-outline">
+<a href=https://github.com/apache/hive-site/edit/main/content/docs/latest/admin/setting-up-metastore-with-mariadb.md class="btn btn-outline">
 <i class="fab fa-github"></i> Edit this page on GitHub
 </a>
 </div>
 </footer>
 </article>
+<aside class=docs-toc-sidebar>
+<div class=docs-toc-sticky>
+<h4><i class="fas fa-list"></i> On this page</h4>
+<nav id=TableOfContents>
+<ul>
+<li><a href=#apache-hive--setting-up-metastore-backed-by-mariadb>Apache Hive : Setting up Metastore backed by MariaDB</a>
+<ul>
+<li><a href=#note>Note</a></li>
+<li><a href=#introduction>Introduction</a></li>
+<li><a href=#configuration>Configuration</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</aside>
 </main>
 </div>
 </div>
