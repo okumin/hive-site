@@ -34,7 +34,7 @@ Of course, before becoming a committer, there are certain things you can't actua
 
 ## Quantitative and Qualitative Evidence
 
-The Apache Hive PMC periodically checks some quantitative evidence, such as the number of contributions or reviews, made by contributors. We believe they are strong signals to find out new committer candidates and prove their contributions are sustainable even after they become committers.
+The Apache Hive PMC periodically reviews quantitative evidence, such as the number of contributions and reviews made by each contributor. We believe these metrics help identify potential committers who have demonstrated sustained engagement and are likely to remain active after becoming committers.
 
 However, any specific number is not a conclusive metric in the Apache Hive project. This section introduces some examples to demonstrate committership qualitatively.
 
@@ -46,9 +46,9 @@ Committers are expected to help guide Apache Hive in the right direction as tech
 
 ### Be a Reliable Reviewer
 
-As the Apache Hive project adopts the RTC (Review then Commit) approach, any project would not move forward without approval from committers. So, the Apache Hive PMC highly values code review contributions as a key indicator of readiness to become a committer.
+As the Apache Hive project adopts the RTC (Review then Commit) approach, any initiative would not move forward without approval from committers. So, the Apache Hive PMC highly values code review contributions as a key indicator of readiness to become a committer.
 
-This does not mean contributors should simply maximize the number of code reviews. Once you became a committer, you would need to review and merge a pull request. Rubber-stamp approvals and merges would introduce chaos and security problems to the Apache Hive project and its users. Your -1 would stall a contribution based on [our bylaws](https://hive.apache.org/community/bylaws/#actions). Therefore, the Apache Hive PMC expects a candidate not only to participate in code reviews but also to give appropriate feedback and +1/-1 at the committer level.
+This does not mean contributors should simply maximize the number of code reviews. Once you become a committer, you will need to review and merge pull requests. Rubber-stamp approvals and merges would introduce chaos and security problems to the Apache Hive project and its users. Your -1 would raise the bar for approval under [our bylaws](https://hive.apache.org/community/bylaws/#actions). Therefore, the Apache Hive PMC expects candidates to demonstrate committer-level judgment through constructive feedback and well-reasoned +1 and -1 votes.
 
 ## Process
 
