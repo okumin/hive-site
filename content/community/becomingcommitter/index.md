@@ -48,11 +48,11 @@ Committers are expected to help guide Apache Hive in the right direction as tech
 
 As the Apache Hive project adopts the RTC (Review then Commit) approach, any initiative would not move forward without approval from committers. So, the Apache Hive PMC highly values code review contributions as a key indicator of readiness to become a committer.
 
-This does not mean contributors should simply maximize the number of code reviews. Once you become a committer, you will need to review and merge pull requests. Rubber-stamp approvals and merges would introduce chaos and security problems to the Apache Hive project and its users. Your -1 would raise the bar for approval under [our bylaws](https://hive.apache.org/community/bylaws/#actions). Therefore, the Apache Hive PMC expects candidates to demonstrate committer-level judgment through constructive feedback and well-reasoned +1 and -1 votes.
+This does not mean contributors should simply maximize the number of code reviews. Once you become a committer, you will need to review and merge pull requests. Rubber-stamp approvals and merges would introduce chaos and security problems to the Apache Hive project and its users. Your -1 would raise the bar for approval under [our bylaws](/community/bylaws/#actions). Therefore, the Apache Hive PMC expects candidates to demonstrate committer-level judgment through constructive feedback and well-reasoned +1 and -1 votes.
 
 ## Process
 
-The Apache Hive PMC invites someone as a committer via nomination, discussion, and then [lazy consensus](https://hive.apache.org/community/bylaws/#approvals).
+The Apache Hive PMC invites someone as a committer via nomination, discussion, and then [lazy consensus](/community/bylaws/#approvals).
 
 ## Visualize
 
