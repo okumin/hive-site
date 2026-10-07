@@ -74,4 +74,6 @@ It should go without saying, but here it is anyway: your participation in the pr
 * you want to push your own changes through unreviewed (Apache Hive follows a review-before-commit policy where even committers need to wait for a +1 from another committer)
 * you only want to commit changes from other contributors within a particular affiliation group (e.g. coworkers in the same corporation); the committer role is about furthering a diverse project, not a narrow agenda
 
+## Growing Together
+
 The Apache Hive PMC is looking for people who can help build a better future for Apache Hive, and we hope the project will be a place where they can grow.
